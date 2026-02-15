@@ -22,19 +22,35 @@ class VectorStore:
         )
         self.collection_name = self.settings.qdrant_collection
         
-    def init_collection(self) -> bool:
+    def init_collection(self, force_recreate: bool = False) -> bool:
         collections = self.client.get_collections().collections
-        if self.collection_name in [col.name for col in collections]:
-            return False
+        collection_exists = self.collection_name in [col.name for col in collections]
         
-        self.client.create_collection(
-            collection_name=self.collection_name,
-            vectors_config=VectorParams(
-                size=self.settings.vector_size,
-                distance=Distance.COSINE
+        if collection_exists:
+            if force_recreate:
+                self.delete_collection()
+            else:
+                # Check if dimensions match
+                collection_info = self.client.get_collection(self.collection_name)
+                existing_dim = collection_info.config.params.vectors.size
+                if existing_dim != self.settings.vector_size:
+                    print(f"⚠ Warning: Collection dimension mismatch. Expected {self.settings.vector_size}, got {existing_dim}")
+                    print(f"  Recreating collection with correct dimensions...")
+                    self.delete_collection()
+                    collection_exists = False
+                else:
+                    return False
+        
+        if not collection_exists or force_recreate:
+            self.client.create_collection(
+                collection_name=self.collection_name,
+                vectors_config=VectorParams(
+                    size=self.settings.vector_size,
+                    distance=Distance.COSINE
+                )
             )
-        )
-        return True
+            return True
+        return False
     
     def upsert_vectors(
         self,

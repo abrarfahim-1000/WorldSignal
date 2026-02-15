@@ -31,11 +31,17 @@ class Settings(BaseModel):
     qdrant_host: str = os.getenv("QDRANT_HOST", "localhost")
     qdrant_port: int = int(os.getenv("QDRANT_PORT", "6333"))
     qdrant_collection: str = os.getenv("QDRANT_COLLECTION", "world_signal_news")
-    vector_size: int = int(os.getenv("VECTOR_SIZE", "384"))
+    vector_size: int = int(os.getenv("VECTOR_SIZE", "3072"))
     
     gemini_api_key: str | None = os.getenv("GEMINI_API_KEY")
     openai_api_key: str | None = os.getenv("OPENAI_API_KEY")
     openai_base_url: str = os.getenv("OPENAI_BASE_URL", "http://localhost:8080/v1")
+    
+    newsapi_key: str | None = os.getenv("NEWSAPI_KEY")
+    guardian_api_key: str | None = os.getenv("GUARDIAN_API_KEY")
+    nyt_api_key: str | None = os.getenv("NYT_API_KEY")
+    finnhub_api_key: str | None = os.getenv("FINNHUB_API_KEY")
+    alphavantage_api_key: str | None = os.getenv("ALPHAVANTAGE_API_KEY")
     
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "text-embedding-004")
     llm_model: str = os.getenv("LLM_MODEL", "gemini-2.0-flash-exp")
