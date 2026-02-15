@@ -11,3 +11,6 @@ wheels/
 action.md
 Geofinai Project Master Implementation Plan.pdf
 .env
+test_components.py
+test_phase2.py
+test_phase3.py

@@ -33,10 +33,12 @@ class Settings(BaseModel):
     qdrant_collection: str = os.getenv("QDRANT_COLLECTION", "world_signal_news")
     vector_size: int = int(os.getenv("VECTOR_SIZE", "384"))
     
-    embedding_model: str = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+    gemini_api_key: str | None = os.getenv("GEMINI_API_KEY")
+    openai_api_key: str | None = os.getenv("OPENAI_API_KEY")
+    openai_base_url: str = os.getenv("OPENAI_BASE_URL", "http://localhost:8080/v1")
     
-    llm_model_path: str = os.getenv("LLM_MODEL_PATH", "./models/mistral-7b-instruct-v0.2.Q4_K_M.gguf")
-    llm_context_size: int = int(os.getenv("LLM_CONTEXT_SIZE", "4096"))
+    embedding_model: str = os.getenv("EMBEDDING_MODEL", "text-embedding-004")
+    llm_model: str = os.getenv("LLM_MODEL", "gemini-2.0-flash-exp")
     llm_temperature: float = float(os.getenv("LLM_TEMPERATURE", "0.7"))
     
     chunk_size: int = int(os.getenv("CHUNK_SIZE", "800"))
